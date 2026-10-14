@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discrete Probability Distributions - AIML Lab</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Chart.js Annotation Plugin CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] { -moz-appearance: textfield; }
+    </style>
+    <!-- MathJax for rendering $...$ formulas -->
+    <script>window.MathJax={tex:{inlineMath:[['$','$']]},svg:{fontCache:'global'}};</script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+</head>
+<body class="bg-slate-50 text-slate-800 h-full flex flex-col">
+
+    <!-- Navigation Header -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="bg-indigo-700 p-2 rounded-lg text-indigo-200 font-bold text-lg">
+                        <svg class="w-6 h-6 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg tracking-tight">AIML Lab</span>
+                        <span class="block text-xs text-indigo-300">Discrete Probability Distributions</span>
+                    </div>
+                </div>
+                <nav class="flex space-x-1 sm:space-x-3">
+                    <button onclick="switchTab('home')" id="nav-home" class="px-3 py-2 rounded-md text-sm font-medium transition-colors bg-indigo-800 text-white">Home</button>
+                    <button onclick="switchTab('binomial')" id="nav-binomial" class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-indigo-200 hover:bg-indigo-800 hover:text-white">Binomial</button>
+                    <button onclick="switchTab('poisson')" id="nav-poisson" class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-indigo-200 hover:bg-indigo-800 hover:text-white">Poisson</button>
+                    <button onclick="switchTab('geometric')" id="nav-geometric" class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-indigo-200 hover:bg-indigo-800 hover:text-white">Geometric</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- VIEW 1: HOME -->
+        <div id="view-home" class="space-y-8">
+            <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-800 rounded-2xl p-8 text-white shadow-xl">
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">AIML Probability & Statistics Laboratory</h1>
+                <p class="text-indigo-100 max-w-3xl text-base sm:text-lg leading-relaxed mb-6">
+                    Welcome to the undergraduate interactive lab for Discrete Probability Distributions. Explore discrete random variables, analytical metrics, probability calculations, cumulative functions, and live interactive graphs.
+                </p>
+                <button onclick="switchTab('binomial')" class="bg-white text-indigo-900 px-6 py-3 rounded-lg font-semibold shadow hover:bg-indigo-50 transition transform hover:-translate-y-0.5">
+                    Explore Binomial Lab &rarr;
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Binomial Card -->
+                <div onclick="switchTab('binomial')" class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:border-indigo-400 cursor-pointer transition group">
+                    <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center font-bold mb-4 group-hover:bg-indigo-600 group-hover:text-white transition">B</div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-2">Binomial Distribution</h2>
+                    <p class="text-slate-600 text-sm mb-4">Models the number of successes in $n$ independent Bernoulli trials with probability $p$. Fully active with calculations & PMF charts.</p>
+                    <span class="text-indigo-600 text-sm font-semibold group-hover:underline">Launch Module &rarr;</span>
+                </div>
+
+                <!-- Poisson Card Placeholder -->
+                <div onclick="switchTab('poisson')" class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:border-indigo-400 cursor-pointer transition group">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center font-bold mb-4 group-hover:bg-blue-600 group-hover:text-white transition">P</div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-2">Poisson Distribution</h2>
+                    <p class="text-slate-600 text-sm mb-4">Models event count occurrences within fixed intervals of time or space given rate parameter $\lambda$.</p>
+                    <span class="text-blue-600 text-sm font-semibold group-hover:underline">Placeholder &rarr;</span>
+                </div>
+
+                <!-- Geometric Card Placeholder -->
+                <div onclick="switchTab('geometric')" class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:border-indigo-400 cursor-pointer transition group">
+                    <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center font-bold mb-4 group-hover:bg-emerald-600 group-hover:text-white transition">G</div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-2">Geometric Distribution</h2>
+                    <p class="text-slate-600 text-sm mb-4">Models the required number of trial attempts needed to observe the first success with success probability $p$.</p>
+                    <span class="text-emerald-600 text-sm font-semibold group-hover:underline">Placeholder &rarr;</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: BINOMIAL DISTRIBUTION (ACTIVE) -->
+        <div id="view-binomial" class="hidden space-y-6">
+            
+            <!-- Module Title Banner -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Binomial Distribution Module</h1>
+                    <p class="text-slate-600 text-sm">Configure $n$, $p$, and $k$ to observe real-time probability distributions, statistics, and graphs.</p>
+                </div>
+                <div class="bg-indigo-50 border border-indigo-100 text-indigo-800 px-4 py-2 rounded-lg text-sm font-medium">
+                    Formula: $P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$
+                </div>
+            </div>
+
+            <!-- Validation Error Alert Banner -->
+            <div id="error-banner" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm flex items-start space-x-2">
+                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div>
+                    <span class="font-bold">Input Error: </span>
+                    <span id="error-message">Please review parameter bounds.</span>
+                </div>
+            </div>
+
+            <!-- Parameters & Input Controls -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <h2 class="text-lg font-semibold text-slate-900 border-b pb-3 mb-4">Module Parameters</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- n Input -->
+                    <div class="space-y-2">
+                        <label for="input-n" class="block text-sm font-medium text-slate-700">
+                            Number of Trials ($n$)
+                        </label>
+                        <input id="input-n" type="number" min="1" max="100" value="20" 
+                            class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                            oninput="validateAndUpdateAll()">
+                        <p class="text-xs text-slate-500">Positive integer ($n \ge 1$). Default: 20.</p>
+                    </div>
+
+                    <!-- p Input -->
+                    <div class="space-y-2">
+                        <label for="input-p" class="block text-sm font-medium text-slate-700">
+                            Probability of Success ($p$)
+                        </label>
+                        <input id="input-p" type="number" min="0" max="1" step="0.01" value="0.35" 
+                            class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                            oninput="validateAndUpdateAll()">
+                        <p class="text-xs text-slate-500">Probability ($0 \le p \le 1$). Default: 0.35.</p>
+                    </div>
+
+                    <!-- k Input -->
+                    <div class="space-y-2">
+                        <label for="input-k" class="block text-sm font-medium text-slate-700">
+                            Target Successes ($k$)
+                        </label>
+                        <input id="input-k" type="number" min="0" max="20" value="7" 
+                            class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                            oninput="validateAndUpdateAll()">
+                        <p class="text-xs text-slate-500">Integer ($0 \le k \le n$). Default: 7.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Statistics Cards Grid -->
+            <div>
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-3">Live Statistical Indicators</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Mean ($\mu$)</span>
+                        <span class="text-xs text-slate-400 block">$n \cdot p$</span>
+                        <p id="stat-mean" class="text-2xl font-bold text-indigo-900 mt-1">7.00</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Variance ($\sigma^2$)</span>
+                        <span class="text-xs text-slate-400 block">$n \cdot p \cdot (1-p)$</span>
+                        <p id="stat-variance" class="text-2xl font-bold text-indigo-900 mt-1">4.55</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Std Dev ($\sigma$)</span>
+                        <span class="text-xs text-slate-400 block">$\sqrt{\text{Variance}}$</span>
+                        <p id="stat-stddev" class="text-2xl font-bold text-indigo-900 mt-1">2.1331</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">2nd Moment $E[X^2]$</span>
+                        <span class="text-xs text-slate-400 block">$\text{Var} + \mu^2$</span>
+                        <p id="stat-moment2" class="text-2xl font-bold text-indigo-900 mt-1">53.5500</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 col-span-2 sm:col-span-1">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Skewness ($\gamma_1$)</span>
+                        <span class="text-xs text-slate-400 block font-mono">(1-2p)/$\sigma$</span>
+                        <p id="stat-skewness" class="text-2xl font-bold text-indigo-900 mt-1">0.1406</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Calculators Section (PMF & CDF) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- PMF Calculator -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-bold text-slate-900">Probability Mass Function (PMF)</h3>
+                            <span class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded">Exact Successes</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 font-mono text-xs text-slate-700 mb-4">
+                            P(X = k) = C(n,k) &middot; p<sup>k</sup> &middot; (1-p)<sup>n-k</sup>
+                        </div>
+                        <div class="text-3xl font-extrabold text-indigo-900 mb-2">
+                            P(X = <span class="calc-val-k">7</span>) = <span id="pmf-result" class="text-amber-600">0.1844</span>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-3.5 rounded-lg text-xs text-amber-900 leading-relaxed">
+                        <span class="font-bold">Meaning:</span> <span id="pmf-explanation">The probability of obtaining exactly 7 successes in 20 trials with success probability 0.35 is 0.1844 (18.44%).</span>
+                    </div>
+                </div>
+
+                <!-- CDF Calculator -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-bold text-slate-900">Cumulative & Complementary CDF</h3>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-1 rounded">Cumulative</span>
+                        </div>
+                        <div class="space-y-3 my-3">
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="text-sm font-medium text-slate-700">Cumulative P(X &le; <span class="calc-val-k">7</span>):</span>
+                                <span id="cdf-result" class="text-xl font-bold text-indigo-700">0.6010</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2">
+                                <span class="text-sm font-medium text-slate-700">Complement P(X &gt; <span class="calc-val-k">7</span>) = 1 - P(X &le; k):</span>
+                                <span id="cdf-complement-result" class="text-xl font-bold text-indigo-700">0.3990</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-100 p-3.5 rounded-lg text-xs text-indigo-900 leading-relaxed space-y-1">
+                        <p><span class="font-bold">Explanation:</span> P(X &le; k) means the probability of getting k or fewer successes.</p>
+                        <p id="cdf-explanation-detail" class="text-indigo-700">In this setup, P(X &le; 7) is 0.6010, while P(X &gt; 7) is 0.3990.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PMF Bar Chart Container -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Binomial PMF Interactive Graph</h3>
+                        <p class="text-xs text-slate-500">Highlighted bar shows target success $k$. Vertical dashed red line indicates mean ($\mu = np$).</p>
+                    </div>
+                    <div class="flex items-center space-x-4 text-xs font-medium">
+                        <span class="flex items-center"><span class="w-3 h-3 bg-indigo-600 rounded-sm inline-block mr-1"></span> P(X)</span>
+                        <span class="flex items-center"><span class="w-3 h-3 bg-amber-500 rounded-sm inline-block mr-1"></span> k = <span class="calc-val-k">7</span></span>
+                        <span class="flex items-center"><span class="w-3 h-0.5 bg-red-500 border border-dashed border-red-500 inline-block mr-1"></span> Mean</span>
+                    </div>
+                </div>
+                <div class="relative h-80 sm:h-96 w-full">
+                    <canvas id="binomialChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- VIEW 3: POISSON PLACEHOLDER -->
+        <div id="view-poisson" class="hidden py-16 text-center space-y-6">
+            <div class="max-w-md mx-auto bg-white rounded-2xl p-8 shadow-sm border border-slate-200 space-y-4">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto">P</div>
+                <h1 class="text-2xl font-bold text-slate-900">Poisson Distribution</h1>
+                <p class="text-slate-600 text-sm">This module is currently a placeholder for future AIML lab sessions focusing on event rates ($\lambda$) and Poisson processes.</p>
+                <button onclick="switchTab('home')" class="inline-block bg-indigo-900 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-indigo-800 transition">Return to Home</button>
+            </div>
+        </div>
+
+        <!-- VIEW 4: GEOMETRIC PLACEHOLDER -->
+        <div id="view-geometric" class="hidden py-16 text-center space-y-6">
+            <div class="max-w-md mx-auto bg-white rounded-2xl p-8 shadow-sm border border-slate-200 space-y-4">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto">G</div>
+                <h1 class="text-2xl font-bold text-slate-900">Geometric Distribution</h1>
+                <p class="text-slate-600 text-sm">This module is currently a placeholder for upcoming laboratory exercises exploring waiting times until first success.</p>
+                <button onclick="switchTab('home')" class="inline-block bg-indigo-900 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-indigo-800 transition">Return to Home</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Module State Management
+        let state = {
+            n: 20,
+            p: 0.35,
+            k: 7,
+            isValid: true,
+            errorMessage: ""
+        };
+
+        let chartInstance = null;
+
+        // Register Chart.js Annotation Plugin
+        if (typeof ChartAnnotation !== 'undefined') {
+            Chart.register(ChartAnnotation);
+        }
+
+        // Tab Switcher Controller
+        function switchTab(tabId) {
+            ['home', 'binomial', 'poisson', 'geometric'].forEach(id => {
+                const view = document.getElementById(`view-${id}`);
+                const nav = document.getElementById(`nav-${id}`);
+                if (id === tabId) {
+                    view.classList.remove('hidden');
+                    if (nav) nav.className = "px-3 py-2 rounded-md text-sm font-medium transition-colors bg-indigo-800 text-white";
+                } else {
+                    view.classList.add('hidden');
+                    if (nav) nav.className = "px-3 py-2 rounded-md text-sm font-medium transition-colors text-indigo-200 hover:bg-indigo-800 hover:text-white";
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (tabId === 'binomial') {
+                if (!chartInstance) {
+                    initBinomialChart();
+                } else {
+                    validateAndUpdateAll();
+                }
+            }
+        }
+
+        // Logarithm Gamma for Combinatorics (Numerical Stability for Large n)
+        function logGamma(n) {
+            const coeff = [
+                76.18009172947146, -86.50532032941677,
+                24.01409824083091, -1.231739572450155,
+                0.1208650973866179e-2, -0.5395239384953e-5
+            ];
+            let x = n;
+            let y = n;
+            let tmp = x + 5.5;
+            tmp -= (x + 0.5) * Math.log(tmp);
+            let ser = 1.000000000190015;
+            for (let j = 0; j <= 5; j++) {
+                y += 1;
+                ser += coeff[j] / y;
+            }
+            return -tmp + Math.log(2.5066282746310005 * ser / x);
+        }
+
+        function logFactorial(n) {
+            if (n <= 1) return 0;
+            return logGamma(n + 1);
+        }
+
+        function logCombinations(n, k) {
+            if (k < 0 || k > n) return -Infinity;
+            return logFactorial(n) - (logFactorial(k) + logFactorial(n - k));
+        }
+
+        // Calculate Binomial PMF P(X = k)
+        function calculateBinomialPMF(n, p, k) {
+            if (k < 0 || k > n) return 0;
+            if (p === 0) return k === 0 ? 1 : 0;
+            if (p === 1) return k === n ? 1 : 0;
+            
+            const logP = logCombinations(n, k) + (k * Math.log(p)) + ((n - k) * Math.log(1 - p));
+            return Math.exp(logP);
+        }
+
+        // Validate Inputs and Update Application
+        function validateAndUpdateAll() {
+            const rawN = document.getElementById('input-n').value;
+            const rawP = document.getElementById('input-p').value;
+            const rawK = document.getElementById('input-k').value;
+
+            const errorBanner = document.getElementById('error-banner');
+            const errorMessage = document.getElementById('error-message');
+
+            let errors = [];
+
+            // Validate n
+            const parsedN = Number(rawN);
+            if (rawN === "" || isNaN(parsedN) || !Number.isInteger(parsedN) || parsedN < 1) {
+                errors.push("Trials (n) must be a positive integer (n ≥ 1).");
+            } else if (parsedN > 100) {
+                errors.push("Trials (n) cannot exceed 100.");
+            }
+
+            // Validate p
+            const parsedP = Number(rawP);
+            if (rawP === "" || isNaN(parsedP) || parsedP < 0 || parsedP > 1) {
+                errors.push("Probability (p) must be between 0 and 1.");
+            }
+
+            // Validate k
+            const parsedK = Number(rawK);
+            if (rawK === "" || isNaN(parsedK) || !Number.isInteger(parsedK) || parsedK < 0) {
+                errors.push("Successes (k) must be a non-negative integer.");
+            } else if (Number.isInteger(parsedN) && parsedN >= 1 && parsedK > parsedN) {
+                errors.push(`Successes (k) cannot exceed trials n (${parsedN}).`);
+            }
+
+            if (errors.length > 0) {
+                state.isValid = false;
+                errorBanner.classList.remove('hidden');
+                errorMessage.innerText = errors.join(" ");
+                return;
+            }
+
+            // Inputs Validated
+            state.isValid = true;
+            state.n = parsedN;
+            state.p = parsedP;
+            state.k = parsedK;
+            errorBanner.classList.add('hidden');
+
+            // Update k input max constraint dynamically
+            document.getElementById('input-k').max = state.n;
+
+            // Sync k labels in UI text elements
+            document.querySelectorAll('.calc-val-k').forEach(el => {
+                el.innerText = state.k;
+            });
+
+            // Perform statistical & probabilistic updates
+            updateStatisticsAndCalculations();
+            updatePMFChart();
+        }
+
+        // Calculate Statistics, PMF, and CDF
+        function updateStatisticsAndCalculations() {
+            const n = state.n;
+            const p = state.p;
+            const k = state.k;
+
+            // 1. Core Statistics
+            const mean = n * p;
+            const variance = n * p * (1 - p);
+            const stdDev = Math.sqrt(variance);
+            const moment2 = variance + (mean * mean);
+            const skewness = stdDev === 0 ? 0 : (1 - 2 * p) / stdDev;
+
+            document.getElementById('stat-mean').innerText = mean.toFixed(2);
+            document.getElementById('stat-variance').innerText = variance.toFixed(2);
+            document.getElementById('stat-stddev').innerText = stdDev.toFixed(4);
+            document.getElementById('stat-moment2').innerText = moment2.toFixed(4);
+            document.getElementById('stat-skewness').innerText = skewness.toFixed(4);
+
+            // 2. PMF Calculation P(X = k)
+            const pmfVal = calculateBinomialPMF(n, p, k);
+            document.getElementById('pmf-result').innerText = pmfVal.toFixed(4);
+            document.getElementById('pmf-explanation').innerText = 
+                `The probability of obtaining exactly ${k} success${k === 1 ? '' : 'es'} in ${n} trials with success probability ${p} is ${pmfVal.toFixed(4)} (${(pmfVal * 100).toFixed(2)}%).`;
+
+            // 3. CDF Calculation P(X <= k) & Complement P(X > k)
+            let cdfVal = 0;
+            for (let i = 0; i <= k; i++) {
+                cdfVal += calculateBinomialPMF(n, p, i);
+            }
+            if (cdfVal > 1) cdfVal = 1; // Clamp precision floating error
+
+            const cdfComplementVal = 1 - cdfVal;
+
+            document.getElementById('cdf-result').innerText = cdfVal.toFixed(4);
+            document.getElementById('cdf-complement-result').innerText = cdfComplementVal.toFixed(4);
+            document.getElementById('cdf-explanation-detail').innerText = 
+                `In this setup, P(X \u2264 ${k}) is ${cdfVal.toFixed(4)} (${(cdfVal * 100).toFixed(2)}%), while P(X > ${k}) is ${cdfComplementVal.toFixed(4)} (${(cdfComplementVal * 100).toFixed(2)}%).`;
+        }
+
+        // Initialize Chart.js PMF Bar Chart
+        function initBinomialChart() {
+            const ctx = document.getElementById('binomialChart').getContext('2d');
+            
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'P(X = value)',
+                        data: [],
+                        backgroundColor: [],
+                        borderRadius: 4,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: (items) => `X = ${items[0].label}`,
+                                label: (item) => `P(X=${item.label}) = ${Number(item.raw).toFixed(4)}`
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                meanLine: {
+                                    type: 'line',
+                                    scaleID: 'x',
+                                    value: 0,
+                                    borderColor: 'rgba(239, 68, 68, 0.9)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        display: true,
+                                        content: (ctx) => `Mean = ${(state.n * state.p).toFixed(2)}`,
+                                        position: 'start',
+                                        backgroundColor: 'rgba(239, 68, 68, 0.85)',
+                                        color: '#fff',
+                                        font: { size: 10, weight: 'bold' },
+                                        padding: 4
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            title: { display: true, text: 'Number of Successes (X)', font: { weight: 'bold' } }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(226, 232, 240, 0.8)' },
+                            title: { display: true, text: 'Probability P(X)', font: { weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+
+            validateAndUpdateAll();
+        }
+
+        // Update PMF Chart Data and Highlights
+        function updatePMFChart() {
+            if (!chartInstance || !state.isValid) return;
+
+            const n = state.n;
+            const p = state.p;
+            const k = state.k;
+
+            const labels = [];
+            const dataValues = [];
+            const backgroundColors = [];
+
+            for (let i = 0; i <= n; i++) {
+                labels.push(i);
+                const pmf = calculateBinomialPMF(n, p, i);
+                dataValues.push(pmf);
+                
+                // Highlight bar for X = k in accent amber, default in indigo
+                if (i === k) {
+                    backgroundColors.push('rgba(245, 158, 11, 0.9)');
+                } else {
+                    backgroundColors.push('rgba(79, 70, 229, 0.75)');
+                }
+            }
+
+            chartInstance.data.labels = labels;
+            chartInstance.data.datasets[0].data = dataValues;
+            chartInstance.data.datasets[0].backgroundColor = backgroundColors;
+
+            // Update Mean Line Annotation Position
+            const meanValue = n * p;
+            if (chartInstance.options.plugins.annotation && chartInstance.options.plugins.annotation.annotations.meanLine) {
+                chartInstance.options.plugins.annotation.annotations.meanLine.value = meanValue;
+            }
+
+            chartInstance.update();
+        }
+
+        // Window Load Handler
+        window.onload = function() {
+            validateAndUpdateAll();
+        };
+    </script>
+</body>
+</html>
